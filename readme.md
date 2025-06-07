@@ -9,3 +9,4 @@ simple, right? well i guess we will have to see
 
 ## june 6 2025
 Its my first day working on the project, ill let you know how it goes:
+The first thing i did was create this readme file, and establish a github for the project.
