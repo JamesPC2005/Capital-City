@@ -10,3 +10,9 @@ simple, right? well i guess we will have to see
 ## june 6 2025
 Its my first day working on the project, ill let you know how it goes:
 The first thing i did was create this readme file, and establish a github for the project.
+After that I created a practace game called a bit racy following instructions from a tutorial. it turned out well but i still have much more to do.
+
+## june 13 2025
+Im back to working on the project, the tutorial is going over UI creations so lets see how i do.
+
+I managed to get functional menu screen and start button, its going well. I think im ready to start developing Capitol City now
