@@ -62,7 +62,7 @@ def game_intro():
             pygame.draw.rect(gameDisplay, bright_green, (display_width / 2 - 50, display_height / 4 + display_height / 12, 100, 50))
             pygame.draw.rect(gameDisplay, red, (display_width / 2 - 50, display_height / 4 + 2 * display_height / 12, 100, 50))
             if press[0] == 1:
-                game_loop()
+                game_loop(None, 0)
         # Quit button
         elif display_width / 2 + 50 > mouse[0] > display_width / 2 - 50 and display_height / 4 + 2 * display_height / 12 + 50 > mouse[1] > display_height / 4 + (2 * display_height) / 12:
             pygame.draw.rect(gameDisplay, bright_red, (display_width / 2 - 50, display_height / 4 + 2 * display_height / 12, 100, 50))
@@ -85,6 +85,30 @@ def game_intro():
 
         pygame.display.update()
         clock.tick(15)
+
+# --- In Game Shop ---
+
+def store(Board, money):
+    board = Board #pass input board into a new varable
+    store = True
+    while store:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        gameDisplay.fill(white)
+        largeText = pygame.font.Font('freesansbold.ttf', 115)
+        Textsurface, Textrect = text_objects("Store", largeText)
+        Textrect.center = (display_width / 8, display_height / 12)
+        gameDisplay.blit(Textsurface, Textrect)
+        
+        mouse = pygame.mouse.get_pos()
+        press = pygame.mouse.get_pressed()
+
+        pygame.display.update()
+        clock.tick(15)
+
+
 
 # --- Board Logic ---
 
@@ -120,9 +144,11 @@ def draw_cells(board, startx, starty, cell_width, cell_height):
 
 # --- Main Game Loop ---
 
-def game_loop():
+def game_loop(Board, Money):
     gameexit = False
-    board = board_initialize()
+    if Board == None:
+        board = board_initialize()
+    money = Money
 
     while not gameexit:
         for event in pygame.event.get():
@@ -131,6 +157,7 @@ def game_loop():
                 quit()
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                #begin to calculate what grid we are over
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 startx = display_width / 5
                 starty = 0
@@ -138,10 +165,26 @@ def game_loop():
                 cell_height = ((display_height * 3) / 4) / len(board)
                 grid_x = int((mouse_x - startx) // cell_width)
                 grid_y = int((mouse_y - starty) // cell_height)
+                #done with grid location calculation
 
-                if 0 <= grid_x < len(board[0]) and 0 <= grid_y < len(board):
+                if 0 <= grid_x < len(board[0]) and 0 <= grid_y < len(board): #placeholder function, for now it just swaps grid values between "empty" and "filled"
                     current = board[grid_y][grid_x]
-                    board[grid_y][grid_x] = "filled" if current == "empty" else "empty"
+                    if current == "empty":
+                        board[grid_y][grid_x] = "filled"
+                    else:
+                        board[grid_y][grid_x] = "empty"
+
+
+            elif event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_SPACE: #reserved space for ending the turn
+                    print('space pressed')
+
+                if event.key == pygame.K_TAB: #start the store
+                    store(board, money)
+
+                if event.key == pygame.K_ESCAPE: #reserved space for in game options menu
+                    print('esc key pressed')
 
         gameDisplay.fill(grey)
         draw_board(board)
