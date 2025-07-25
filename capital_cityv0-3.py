@@ -150,6 +150,10 @@ def game_loop(Board, Money):
         board = board_initialize()
     else: board = Board
     money = Money
+    date = ("spring" , 0)
+    season = "spring"
+    year = 0
+
 
     while not gameexit:
         earned = 0
@@ -182,6 +186,8 @@ def game_loop(Board, Money):
                 if event.key == pygame.K_SPACE: #reserved space for ending the turn
                     earned = turn(board, money)
                     money += earned
+                    season, year = time_passes(date[0], date[1])
+                    date = (season,year)
 
                 if event.key == pygame.K_TAB: #start the store
                     store(board, money)
@@ -213,6 +219,12 @@ def game_loop(Board, Money):
         Textsurface, Textrect = text_objects("Money: " + str(money), UIText)
         Textrect.center = (display_width / 12, display_height / 16)
         gameDisplay.blit(Textsurface, Textrect)
+
+        Textsurface, Textrect = text_objects("Date: " + season + str(year), UIText)
+        Textrect.center = (display_width / 12, display_height / 16 + 50)
+        gameDisplay.blit(Textsurface, Textrect)
+
+
         pygame.display.update()
         clock.tick(60)
 
@@ -224,6 +236,24 @@ def turn(board, Money):
                 earned += 1
 
     return earned
+
+def time_passes(season, year):
+    if season == "spring":
+        season = "summer"
+
+    elif season == "summer":
+        season = "fall"
+
+    elif season == "fall":
+        season = "winter"
+
+    elif season == "winter":
+        season = "spring"
+        year += 1
+        #rent
+
+    return (season, year)
+
 
 
 # --- Start the game ---
